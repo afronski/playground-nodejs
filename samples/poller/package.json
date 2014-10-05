@@ -1,0 +1,19 @@
+{
+  "name": "node-poller",
+  "version": "0.1.0",
+  "author": "Wojciech Gawroński <afronski@gmail.com>",
+  "description": "A sample command line poller with auto-restarting provided by forever-monitor",
+  "keywords": [
+    "cli",
+    "forever",
+    "polling"
+  ],
+  "dependencies" : {
+    "colorize":  "*",
+    "forever-monitor":  "0.10.x"
+  },
+  "license": "MIT",
+  "engine": {
+    "node": ">= 0.8.6"
+  }
+}

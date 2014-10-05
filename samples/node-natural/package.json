@@ -1,0 +1,17 @@
+{
+  "name": "node-4-universities",
+  "private": true,
+  "version": "0.1.0",
+  "author": "Wojciech Gawronski",
+  "main": "./main.js",
+  "dependencies" : {
+    "natural":  "*",
+    "colors": "*",
+    "htmlparser": "*",
+    "glob": "*",
+    "optimist": "*"
+  },
+  "engines": {
+    "node": ">=0.6"
+  }
+}

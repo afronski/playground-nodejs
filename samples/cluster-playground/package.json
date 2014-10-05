@@ -1,0 +1,38 @@
+{
+  "name": "backoffice-poller",
+  "description": "No description",
+  "version": "0.1.0",
+  "homepage": "",
+  "author": {
+    "name": "Wojciech Gawroński",
+    "email": "wgawronski@future-processing.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "no-git"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": [
+    {
+      "type": "Private",
+      "url": "/blob/master/LICENSE-Private"
+    }
+  ],
+  "main": "app.js",
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies" : {
+    "optimist" : "0.3.4",
+    "colors" : "*"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.15"
+  },
+  "keywords": []
+}

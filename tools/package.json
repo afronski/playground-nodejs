@@ -1,0 +1,14 @@
+{
+  "name": "vimeo-scraper",
+  "version": "0.1.0",
+  "description": "Small script for Selenium JS driver which collects downloadable links from Vimeo pages.",
+
+  "main": "vimeo-scraper.js",
+
+  "author": "Wojciech Gawroński (afronski@gmail.com)",
+  "license": "MIT",
+
+  "dependencies": {
+    "selenium-webdriver": "~2.42.0"
+  }
+}

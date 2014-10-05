@@ -1,0 +1,63 @@
+{
+  "name": "js-security-tool",
+
+  "description": "Linting tool oriented to detect and mark popular security issues from front-end area",
+  "version": "0.0.1",
+
+  "homepage": "https://github.com/afronski/js-security-tool",
+
+  "author": {
+    "name": "Wojtek Gawroński (afronski)",
+    "email": "afronski@gmail.com"
+  },
+
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/afronski/js-security-tool.git"
+  },
+
+  "bugs": {
+    "url": "https://github.com/afronski/js-security-tool/issues"
+  },
+
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/afronski/js-security-tool/blob/master/LICENSE-MIT"
+    }
+  ],
+
+  "main": "index.js",
+
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+
+  "scripts": {
+    "test": "grunt test"
+  },
+
+  "dependencies": {
+    "esprima": "1.0.x",
+    "optimist": "0.3.x",
+    "colors": "0.6.x"
+  },
+
+  "devDependencies": {
+    "grunt": "~0.4.1",
+
+    "should": "1.2.x",
+
+    "grunt-contrib-jshint": "~0.1.1",
+    "grunt-contrib-watch": "~0.2.0",
+
+    "grunt-istanbul": "0.2.0",
+    "grunt-mocha-cli": "1.0.0"
+  },
+
+  "keywords": [
+    "lint",
+    "security",
+    "xss"
+  ]
+}
