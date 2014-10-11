@@ -10,7 +10,7 @@
   ],
   "dependencies" : {
     "colorize":  "*",
-    "forever-monitor":  "0.10.x"
+    "forever-monitor":  "^1.3.0"
   },
   "license": "MIT",
   "engine": {
