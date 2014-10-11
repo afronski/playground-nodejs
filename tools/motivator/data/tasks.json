@@ -1,0 +1,39 @@
+{
+	"big": [
+		"Prepare one article to the blog",
+
+		"TDD Kata in Erlang",
+		"TDD Kata in JavaScript",
+		"TDD Kata in C#",
+		"TDD Kata in Java",
+
+		"Pattern Kata in C#",
+		"Pattern Kata in Java",
+
+		"Read and write one assignment related with TLA+ / Spin",
+
+		"Write one related with SPOJ / OI"
+	],
+
+	"medium": [
+		"Write one easy program in Erlang (99 problems)",
+		"Write one easy program in Clojure (99 problems)",
+		"Write one easy program in Haskell (99 problems)",
+		"Write one easy program in Go (99 problems)",
+		"Write one easy program in Prolog (99 problems)",
+
+		"Write one assignment from 'Structure and Interpretation of Computer Programs'",
+		"Write one assignment from 'Distributed Systems'"
+	],
+
+	"small": [
+		"Read one article from the 'Pending' list",
+
+		"Read the book - 'Structure and Interpretation of Computer Programs'",
+		"Read the book - 'How to solve it'",
+		"Read the book - 'Making reliable distributed systems in presence of software errors'",
+		"Read the book - 'Learn You a Haskell for Great Good!'",
+
+		"Prepare one assignment about HTML5 / CSS3 / JavaScript"
+	]
+}
