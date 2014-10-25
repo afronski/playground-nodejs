@@ -1,0 +1,18 @@
+{
+  "name": "onerror-and-images",
+  "version": "0.1.0",
+
+  "description": "Using 'onerror' for 'img' tags.",
+  "main": "server.js",
+
+  "scripts": {
+    "start": "node server.js"
+  },
+
+  "author": "Wojtek Gawroński (afronski@gmail.com)",
+
+  "license": "MIT",
+  "dependencies": {
+    "node-static": "^0.7.6"
+  }
+}

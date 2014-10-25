@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+
+  <meta name="author" content="Wojtek Gawroński (afronski)" />
+  <meta name="description" content="onerror and Images" />
+
+  <title>onerror and Images</title />
+
+  <meta name="viewport" content="width=device-width" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+</head>
+<body>
+  <section class="main">
+    <img src="/OK.png" alt="OK image" />
+    <img src="/OK.png" alt="OK image" />
+    <img src="/OK.png" alt="OK image" />
+    <img src="/OK.png" alt="OK image" />
+    <img src="/OK.png" alt="OK image" />
+    <img src="/OK.png" alt="OK image" />
+    <img src="/NOT-OK-1.png" alt="Ups... :(" />
+    <img src="/NOT-OK-2.png" alt="Ups... :(" />
+    <img src="/NOT-OK-3.png" alt="Ups... :(" />
+    <img src="/NOT-OK-4.png" alt="Ups... :(" />
+    <img src="/NOT-OK-5.png" alt="Ups... :(" />
+    <img src="/NOT-OK-6.png" alt="Ups... :(" />
+    <img src="/NOT-OK-7.png" alt="Ups... :(" />
+    <img src="/NOT-OK-8.png" alt="Ups... :(" />
+  </section>
+  <script>
+    [].slice.call(document.querySelectorAll("img")).forEach(function(node) {
+      node.onerror = function () {
+        this.setAttribute("src", "/404.png")
+      };
+    });
+  </script>
+</body>
+</html>
