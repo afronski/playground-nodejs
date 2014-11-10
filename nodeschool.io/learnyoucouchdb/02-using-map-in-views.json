@@ -1,0 +1,8 @@
+{
+    "_id": "_design/thingsMadeOfMetal",
+    "views": {
+        "thingsMadeOfMetal": {
+            "map": "function (entry) { if (entry.material === 'metal') { emit(entry._id, entry); } }"
+        }
+    }
+}

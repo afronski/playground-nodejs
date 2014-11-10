@@ -1,0 +1,9 @@
+{
+    "_id": "_design/languages",
+    "views": {
+        "languages": {
+            "map": "function (entry) { emit(entry._id, entry); }",
+            "reduce": "_count"
+        }
+    }
+}
