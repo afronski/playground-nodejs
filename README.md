@@ -5,10 +5,11 @@
 - ES6 in Node.js:
   - Generators
   - Weak Maps
-  - Symbols
+  - Proxies
 - Browserify + NPM + React.
   - ClojureScript + Om.
+  - ClojureScript + Reagent.
 - Hapi.js
 - Kraken.js
 - C4 and generating diagrams from Node.js application.
-  - Similar tool like 'ferd/recon' for Erlang.
+  - Similar tool like `ferd/recon` for Erlang.
