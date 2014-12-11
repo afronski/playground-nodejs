@@ -1,0 +1,10 @@
+{
+  "name": "hello-ronin",
+  "version": "0.1.0",
+  "dependencies": {
+    "ronin": "^0.1.2"
+  },
+  "bin": {
+    "hello-ronin": "./bin/hello-ronin"
+  }
+}
