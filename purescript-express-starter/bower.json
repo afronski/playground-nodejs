@@ -1,0 +1,19 @@
+{
+  "name": "purescript-express-starter",
+  "version": "1.0.0",
+  "moduleType": [
+    "node"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-express": "~0.1.4"
+  },
+  "resolutions": {
+    "purescript-arrays": "~0.3.0"
+  }
+}

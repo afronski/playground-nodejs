@@ -1,0 +1,22 @@
+{
+  "name": "purescript-express-starter",
+  "version": "0.1.0",
+
+  "description": "Purescript Node.js example with use of Express.",
+
+  "dependencies": {
+    "express": "~4.10.6"
+  },
+
+  "devDependencies": {
+    "pulp": "~1.5.0"
+  },
+
+  "scripts": {
+    "test": "pulp test",
+    "run": "pulp run"
+  },
+
+  "author": "Wojtek Gawroński (afronski@gmail.com)",
+  "license": "MIT"
+}
