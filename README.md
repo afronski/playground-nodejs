@@ -6,6 +6,7 @@
   - Generators
   - Weak Maps
   - Proxies
+  - https://www.npmjs.com/package/traceur-runner
 - Browserify + NPM + React.
   - ClojureScript + Om.
   - ClojureScript + Reagent.
