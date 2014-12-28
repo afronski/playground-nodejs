@@ -1,0 +1,14 @@
+{
+  "name": "file-watcher-zmq",
+  "version": "0.1.0",
+
+  "description": "File watcher implemented with use of ZMQ.",
+  "main": "index.js",
+
+  "author": "Wojtek Gawronski (afronski@gmail.com)",
+  "license": "MIT",
+
+  "dependencies": {
+    "zmq": "^2.8.0"
+  }
+}
