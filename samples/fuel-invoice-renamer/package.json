@@ -1,0 +1,15 @@
+{
+  "name": "fuel-invoice-renamer",
+  "version": "0.1.0",
+  "description": "Renamer and resizer for photo invoices.",
+  "main": "fuel.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^4.3.5",
+    "moment": "^2.9.0"
+  }
+}
