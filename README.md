@@ -13,3 +13,4 @@
 - C4 and generating diagrams from Node.js application.
   - Similar tool like `ferd/recon` for Erlang.
 - [Pigato](https://github.com/prdn/pigato) - Use Case.
+- [Synaptic](https://github.com/cazala/synaptic)
