@@ -1,0 +1,28 @@
+{
+  "name": "comments-gh-scraper",
+  "version": "0.1.0",
+  "description": "Small app for scraping comments from issue on Github.",
+  "main": "comments-gh-scraper.js",
+  "scripts": {
+    "scrape": "node comments-gh-scraper.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:afronski/playground-nodejs.git"
+  },
+  "keywords": [
+    "github",
+    "comments",
+    "scraper"
+  ],
+  "author": "Wojtek Gawroński (afronski@gmail.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/afronski/playground-nodejs/issues"
+  },
+  "homepage": "https://github.com/afronski/playground-nodejs",
+  "dependencies": {
+    "concat-stream": "~1.4.8",
+    "node-geocoder": "~2.20.0"
+  }
+}
