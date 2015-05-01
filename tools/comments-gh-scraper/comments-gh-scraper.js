@@ -182,8 +182,8 @@ function createChapter(events, comment, callback) {
         callback(null);
     } else {
         var cached = cache[info.name];
-        info.url = info.chapter || util.format("http://nodeschool.io/%s", info.city);
-        info.event = events[info.name.toLowerCase()] || events[capitalize(info.city)];
+        info.url = info.chapter || util.format("http://nodeschool.io/%s", capitalize(info.city));
+        info.event = events[info.name.toLowerCase()] || events[info.city.toLowerCase()];
         if (cached) {
             info.lat = cached.lat;
             info.lng = cached.lng;
