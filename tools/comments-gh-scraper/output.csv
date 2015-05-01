@@ -1,4 +1,4 @@
-city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter
+city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter,email
 "Amsterdam","Netherlands","52.3702157","4.895167900000001","https://github.com/nodeschool/Amsterdam","","","Yoshua Wuyts","yoshuawuyts ","yoshomfg","","i@yoshuawuyts.com"
 "","Bainbridge Island","47.6262081","-122.5212448","https://github.com/nodeschool/bainbridge","","","Andrew Waterman","awaterma","andrew.waterman","",""
 "Belo Horizonte","Brazil","-19.9166813","-43.9344931","http://nodeschool.io/belo-horizonte/","","","Paulo Pires","paulohp","paulo.manguara","",""
@@ -36,7 +36,7 @@ city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter
 "Seville","Spain","37.3890924","-5.9844589","http://nodeschool.io/Seville","","","Beltran Rueda","beltran-rubo","beltranrubo","beltranrubo",""
 "Silesia","Poland","50.5716595","19.3219768","http://nodeschool.io/Silesia","","","Wojtek Gawroński","afronski","afronski","afronski",""
 "Stavanger","Norway","58.9699756","5.7331073","https://github.com/nodeschool/stavanger","","","Asbjorn Enge","asbjornenge","asbjornenge","","asbjorn@hanafjedle.net"
-"Tokyo","Japan","0","0","http://nodeschool.io/Tokyo","","","Yosuke Furukawa","yosuke-furukawa","yosuke_furukawa","",""
+"Tokyo","Japan","35.7090259","139.7319925","http://nodeschool.io/Tokyo","","","Yosuke Furukawa","yosuke-furukawa","yosuke_furukawa","",""
 "Toronto","Canada","43.653226","-79.3831843","http://nodeschool.io/Toronto","","","Jeff Jewiss","jeffjewiss","jeffjewiss","",""
 "Vancouver","Canada","49.2827291","-123.1207375","https://github.com/nodeschool/vancouver","","","Luke Vivier","lvivier","lukevivier","",""
 "Western Mass","USA","42.5944125","-70.68915439999999","https://github.com/nodeschool/western-mass/","","","Sequoia McDowell","sequoia ","sequoia.mcdowell ","","sequoia.mcdowell@gmail.com"

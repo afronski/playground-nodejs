@@ -72,17 +72,20 @@ function extractInfo(body) {
 
     var lines = body.split("\n");
     var name = /(.*)(\r?)$/.exec(lines.shift())[1];
-    var nameSet = /([^,]*)(\s*,\s*(.*)\s*)/.exec(name)
+    var nameSet = /([^,]*)(\s*,\s*(.*)\s*)/.exec(name);
+
     if (!nameSet) {
-        nameSet = ["", "", "", /^\s*(.*)\s*$/.exec(name)[1]]
+        nameSet = ["", "", "", /^\s*(.*)\s*$/.exec(name)[1]];
     }
+
     var owner = /(.*)(\r?)$/.exec(lines.shift())[1];
     var result = {
         name: name,
         owner: owner,
         city: nameSet && nameSet[1],
-        country: nameSet && nameSet[3],
+        country: nameSet && nameSet[3]
     };
+
     lines.forEach(function (line) {
         getProperty(line, "github", result);
         getProperty(line, "chapter", result);
@@ -90,7 +93,7 @@ function extractInfo(body) {
         getProperty(line, "twitter", result);
         getProperty(line, "email", result);
         getProperty(line, "event", result);
-    })
+    });
 
     return result;
 }
@@ -187,7 +190,7 @@ function createChapter(events, comment, callback) {
             callback(null, info);
         } else {
             geocode(info.name.toLowerCase(), function (error, geo) {
-                if (error) {   
+                if (error) {
                     info.lat = "";
                     info.lng = "";
                 } else {
@@ -216,7 +219,8 @@ function parseEvents(events) {
 }
 
 function parseComments(events, comments) {
-    var async = require('async');
+    var async = require("async");
+
     async.mapLimit(comments, 10, createChapter.bind(null, events), function (err, chapters) {
         fs.writeFileSync(CACHE_FILE_NAME, JSON.stringify(cache));
         chapters = chapters.sort(function (a, b) {
@@ -229,7 +233,8 @@ function parseComments(events, comments) {
             if (b.name > a.name) return -1;
             return 0;
         });
-        console.log("city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter");
+
+        console.log("city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter,email");
         chapters.forEach(function (object) {
             if (object) {
                 console.log("\"%s\",\"%s\",\"%d\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
@@ -247,6 +252,7 @@ function parseComments(events, comments) {
                     object.email || "");
             }
         });
+
         process.exit(0);
     });
 }
