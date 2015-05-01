@@ -1,10 +1,13 @@
+#!/usr/bin/env node
 "use strict";
+var fs = require("fs");
 
-var ISSUE = 8;
 var OWNER = "nodeschool";
 var REPO = "international-day";
 
 var TIMEOUT = 4000;
+
+var CACHE_FILE_NAME = __dirname + "/.cache.json";
 
 var settings = require("./package.json");
 
@@ -24,15 +27,10 @@ var extra = {
 
 var geocoder = require("node-geocoder")(geocoderProvider, httpAdapter, extra);
 
-var options = {
-    hostname: "api.github.com",
-    port: 443,
-    path: util.format("/repos/%s/%s/issues/%d/comments?per_page=100", OWNER, REPO, ISSUE),
-    method: "GET",
-    headers: {
-        "User-Agent": util.format("comments-gh-scraper@%s", settings.version)
-    }
-};
+var cache = {};
+try {
+    cache = require(CACHE_FILE_NAME);
+} catch (e) {}
 
 function capitalize(name) {
     if (name === "buenosaires") {
@@ -57,69 +55,44 @@ function capitalize(name) {
     return name.join(" ");
 }
 
-function extractName(body) {
-    var result = null;
+function getProperty(line, name, result) {
+    var regExp = new RegExp("^\\s*" + name + "\\s*(\\:| )\\s*(.*)", "i");
+    var res = regExp.exec(line);
+    if (res) {
+        var data = /^@?(.*)/.exec(res[2]);
+        result[name] = data[1];
+    }
+}
 
-    if (body.match(/this|works|please|what|does|means?/gi)) {
-        return "UNKNOWN";
+function extractInfo(body) {
+
+    if (body.match(/^\[no\-enroll\]/)) {
+        return null;
     }
 
-    result = /(?:github\.com\/nodeschool\/)([^\s\/\(\)]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1];
+    var lines = body.split("\n");
+    var name = /(.*)(\r?)$/.exec(lines.shift())[1];
+    var nameSet = /([^,]*)(\s*,\s*(.*)\s*)/.exec(name)
+    if (!nameSet) {
+        nameSet = ["", "", "", /^\s*(.*)\s*$/.exec(name)[1]]
     }
+    var owner = /(.*)(\r?)$/.exec(lines.shift())[1];
+    var result = {
+        name: name,
+        owner: owner,
+        city: nameSet && nameSet[1],
+        country: nameSet && nameSet[3],
+    };
+    lines.forEach(function (line) {
+        getProperty(line, "github", result);
+        getProperty(line, "chapter", result);
+        getProperty(line, "skype", result);
+        getProperty(line, "twitter", result);
+        getProperty(line, "email", result);
+        getProperty(line, "event", result);
+    })
 
-    result = /(?:nodeschool.io\/)([^\s\/\(\)]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1];
-    }
-
-    result = /(?:chapter\:\s*)([^\s\/\(\)]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1];
-    }
-
-    result = /(?:chapter.name\:\s*)([^\s\/\(\)]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1];
-    }
-
-    result = /campjs/gi.exec(body);
-    if (result && result.length > 0) {
-        return "Melbourne";
-    }
-
-    result = /(saint [a-z]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1];
-    }
-
-    result = /^([a-z\- ]+),/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1].trim();
-    }
-
-    result = /,([a-z\- ]+),/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1].trim();
-    }
-
-    result = /^([a-z]+)(?:\n|\r)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1].trim();
-    }
-
-    result = /^([a-z]+)\s*(?:[^\s])/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1].trim();
-    }
-
-    result = /^\* ([a-z ]+)/gi.exec(body);
-    if (result && result.length > 0) {
-        return result[1].trim();
-    }
-
-    return "UNKNOWN";
+    return result;
 }
 
 function usafy(name) {
@@ -130,52 +103,18 @@ function usafy(name) {
     return name;
 }
 
-function handleSpecialURL(name) {
-    if (name === "santiago") {
-        return "http://www.noders.cl";
-    }
-
-    if (name === "wrocław") {
-        return "https://github.com/nodeschool/wroclaw";
-    }
-
-    if (name === "mexico") {
-        return "http://nodeschool.io/mexicocity";
-    }
-
-    if (name === "bainbridge island") {
-        return "https://github.com/nodeschool/bainbridge";
-    }
-
-    if (name === "saint petersburg") {
-        return "http://nodeschool.io/spb";
-    }
-
-    if (name === "oxford") {
-        return "http://jsoxford.com";
-    }
-
-    return util.format("http://nodeschool.io/%s", name);
-}
-
 function geocode(name, callback) {
-    if (name === "silesia") {
+    if (name === "Silesia, Poland") {
         name = "katowice";
-    }
-
-    if (name === "yosuke") {
-        name = "tokyo, japan";
     }
 
     geocoder.geocode(name, function (err, res) {
         if (err || res.length === 0) {
-            console.log(err, res);
-
-            callback({ lat: 0, lng: 0});
+            callback(err, { lat: 0, lng: 0});
             return;
         }
 
-        callback({ lat: res[0].latitude, lng: res[0].longitude });
+        callback(err, { lat: res[0].latitude, lng: res[0].longitude });
     });
 }
 
@@ -234,71 +173,140 @@ function testURL(url, name, callback) {
     });
 }
 
-function createChapter(comment, callback) {
-    var object;
-    var name = extractName(comment.body);
-
-    if (name === "UNKNOWN") {
+function createChapter(events, comment, callback) {
+    var info = extractInfo(comment.body);
+    if (!info) {
         callback(null);
     } else {
-        object = {
-            name: util.format("NodeSchool %s", usafy(capitalize(name))),
-            url: handleSpecialURL(name.toLowerCase())
-        };
-
-        geocode(name.toLowerCase(), function (geo) {
-            object.lat = geo.lat;
-            object.lng = geo.lng;
-
-            testURL(handleSpecialURL(name.toLowerCase()), name.toLowerCase(), function (result) {
-                if (!result.success) {
-                    object.url = result.url;
+        var cached = cache[info.name];
+        info.url = info.chapter || util.format("http://nodeschool.io/%s", info.city);
+        info.event = events[info.name.toLowerCase()] || events[capitalize(info.city)];
+        if (cached) {
+            info.lat = cached.lat;
+            info.lng = cached.lng;
+            callback(null, info);
+        } else {
+            geocode(info.name.toLowerCase(), function (error, geo) {
+                if (error) {   
+                    info.lat = "";
+                    info.lng = "";
+                } else {
+                    info.lat = geo.lat;
+                    info.lng = geo.lng;
+                    cache[info.name] = {
+                        lat: geo.lat,
+                        lng: geo.lng
+                    };
                 }
-
-                callback(object);
+                callback(null, info);
             });
-        });
-    }
-}
-
-function parseComments(comments) {
-    console.log("name,lat,lon,chapter-url");
-
-    var chapters = comments.length - 1;
-    var i = 0;
-
-    var timer = setInterval(function () {
-        (function (i) {
-            createChapter(comments[i], function (object) {
-
-                if (object) {
-                    process.stdout.write(util.format("\"%s\",\"%d\",\"%d\",\"%s\"\n", object.name, object.lat, object.lng, object.url));
-                }
-
-                if (i >= chapters) {
-                    clearInterval(timer);
-                    setTimeout(function () { process.exit(0); }, 1000);
-                }
-            });
-        } (i));
-
-        ++i;
-    }, 5000);
-}
-
-https.get(options, function (response) {
-    if (response.statusCode >= 300) {
-        console.error("[EE] Unexpected status code: %d", response.statusCode);
-        return;
-    }
-
-    response.pipe(concat(function (content) {
-        try {
-            parseComments(JSON.parse(content));
-        } catch (error) {
-            console.error("[EE] JSON syntax error: %s", error);
         }
-    }));
-}).on("error", function (error) {
-    console.error("[EE] %s", error);
-});
+    }
+}
+
+function parseEvents(events) {
+    var result = {};
+    events.forEach(function (event) {
+        var res = /^\s*([^:]+)\s*\:\s*(.*)\s*$/g.exec(event.body);
+        if (res) {
+            result[res[1].toLowerCase()] = res[2];
+        }
+    });
+    return result;
+}
+
+function parseComments(events, comments) {
+    var async = require('async');
+    async.mapLimit(comments, 10, createChapter.bind(null, events), function (err, chapters) {
+        fs.writeFileSync(CACHE_FILE_NAME, JSON.stringify(cache));
+        chapters = chapters.sort(function (a, b) {
+            if (!a)
+                return !b ? 0 : 1;
+            if (!b)
+                return -1;
+
+            if (a.name > b.name) return 1;
+            if (b.name > a.name) return -1;
+            return 0;
+        });
+        console.log("city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter");
+        chapters.forEach(function (object) {
+            if (object) {
+                console.log("\"%s\",\"%s\",\"%d\",\"%d\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"",
+                    object.city,
+                    object.country,
+                    object.lat,
+                    object.lng,
+                    object.url || "",
+                    object.event || "",
+                    object.hexLogo || "",
+                    object.owner || "",
+                    object.github || "",
+                    object.skype || "",
+                    object.twitter || "",
+                    object.email || "");
+            }
+        });
+        process.exit(0);
+    });
+}
+
+function loadEventSignups() {
+    var ISSUE = 22;
+    https.get({
+        hostname: "api.github.com",
+        port: 443,
+        path: util.format("/repos/%s/%s/issues/%d/comments?per_page=100", OWNER, REPO, ISSUE),
+        method: "GET",
+        headers: {
+            "User-Agent": util.format("comments-gh-scraper@%s", settings.version)
+        }
+    }, function (response) {
+        if (response.statusCode >= 300) {
+            throw new Error("[EE] Unexpected status code: " + response.statusCode + " | " + response.statusMessage);
+        }
+
+        response.pipe(concat(function (content) {
+            var json;
+            try {
+                json = JSON.parse(content);
+            } catch (error) {
+                throw new Error("[EE] JSON syntax error: " + error + "\n" + content);
+            }
+            loadComments(parseEvents(json));
+        }));
+    }).on("error", function (error) {
+        throw new Error("[EE] " + error);
+    });
+}
+
+function loadComments(events) {
+    var ISSUE = 8;
+    https.get({
+        hostname: "api.github.com",
+        port: 443,
+        path: util.format("/repos/%s/%s/issues/%d/comments?per_page=100", OWNER, REPO, ISSUE),
+        method: "GET",
+        headers: {
+            "User-Agent": util.format("comments-gh-scraper@%s", settings.version)
+        }
+    }, function (response) {
+        if (response.statusCode >= 300) {
+            throw new Error("[EE] Unexpected status code: " + response.statusCode + " | " + response.statusMessage);
+        }
+
+        response.pipe(concat(function (content) {
+            var json;
+            try {
+                json = JSON.parse(content);
+            } catch (error) {
+                throw new Error("[EE] JSON syntax error: " + error + "\n" + content);
+            }
+            parseComments(events, json);
+        }));
+    }).on("error", function (error) {
+        throw new Error("[EE] " + error);
+    });
+}
+
+loadEventSignups();
