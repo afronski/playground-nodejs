@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/afronski/playground-nodejs",
   "dependencies": {
+    "async": "^0.9.0",
     "concat-stream": "~1.4.8",
     "node-geocoder": "~2.20.0"
   }
