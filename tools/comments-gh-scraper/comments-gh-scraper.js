@@ -1,5 +1,7 @@
 #!/usr/bin/env node
+
 "use strict";
+
 var fs = require("fs");
 
 var OWNER = "nodeschool";
@@ -26,38 +28,16 @@ var extra = {
 };
 
 var geocoder = require("node-geocoder")(geocoderProvider, httpAdapter, extra);
-
 var cache = {};
+
 try {
     cache = require(CACHE_FILE_NAME);
 } catch (e) {}
 
-function capitalize(name) {
-    if (name === "buenosaires") {
-        name = "buenos aires";
-    }
-
-    if (name === "costarica") {
-        name = "costa rica";
-    }
-
-    if (name === "sanfrancisco") {
-        name = "san francisco";
-    }
-
-    name = name.replace(/\-/gi, " ");
-    name = name.split(" ");
-
-    name = name.map(function (word) {
-        return word.slice(0, 1).toUpperCase() + word.slice(1);
-    });
-
-    return name.join(" ");
-}
-
 function getProperty(line, name, result) {
     var regExp = new RegExp("^\\s*" + name + "\\s*(\\:| )\\s*(.*)", "i");
     var res = regExp.exec(line);
+
     if (res) {
         var data = /^@?(.*)/.exec(res[2]);
         result[name] = data[1];
@@ -65,7 +45,6 @@ function getProperty(line, name, result) {
 }
 
 function extractInfo(body) {
-
     if (body.match(/^\[no\-enroll\]/)) {
         return null;
     }
@@ -93,6 +72,7 @@ function extractInfo(body) {
         getProperty(line, "twitter", result);
         getProperty(line, "email", result);
         getProperty(line, "event", result);
+
         if (result.email) {
             result.email = result.email
                 .replace(/\s*\[\s*at\s*\]\s*/ig, "@")
@@ -103,19 +83,7 @@ function extractInfo(body) {
     return result;
 }
 
-function usafy(name) {
-    name = name.replace(/ Mass$/, ", MA");
-    name = name.replace(/ Me$/, ", ME");
-    name = name.replace(/ Boulder$/, " and Boulder, CO");
-
-    return name;
-}
-
 function geocode(name, callback) {
-    if (name === "Silesia, Poland") {
-        name = "katowice";
-    }
-
     geocoder.geocode(name, function (err, res) {
         if (err || res.length === 0) {
             callback(err, { lat: 0, lng: 0});
@@ -126,72 +94,21 @@ function geocode(name, callback) {
     });
 }
 
-function testURL(url, name, callback) {
-    var module = http;
-
-    if (url.indexOf("https") !== -1) {
-        module = https;
-    }
-
-    function failed() {
-        var url = util.format("https://github.com/nodeschool/%s", name);
-
-        var req = https.get(url, function (res) {
-            if (res.statusCode < 400) {
-                callback({
-                    success: false,
-                    url: url
-                });
-            } else {
-                callback({
-                    success: false,
-                    url: ""
-                });
-            }
-        }).on("error", function (error) {
-            callback({
-                success: false,
-                url: ""
-            });
-        });
-
-        req.on("socket", function (socket) {
-            socket.setTimeout(TIMEOUT);
-            socket.on("timeout", function() {
-                req.abort();
-            });
-        });
-    }
-
-    var request = module.get(url, function (response) {
-        if (response.statusCode < 400) {
-            callback({ success: true });
-        } else {
-            failed();
-        }
-    }).on("error", function (error) {
-        failed();
-    });
-
-    request.on("socket", function (socket) {
-        socket.setTimeout(TIMEOUT);
-        socket.on("timeout", function() {
-            request.abort();
-        });
-    });
-}
-
 function createChapter(events, comment, callback) {
     var info = extractInfo(comment.body);
+
     if (!info) {
         callback(null);
     } else {
         var cached = cache[info.name];
-        info.url = info.chapter || util.format("http://nodeschool.io/%s", capitalize(info.city));
+
+        info.url = info.chapter || util.format("http://nodeschool.io/%s", info.city.replace(/\s/, "-").toLowerCase());
         info.event = events[info.name.toLowerCase()] || events[info.city.toLowerCase()];
+
         if (cached) {
             info.lat = cached.lat;
             info.lng = cached.lng;
+
             callback(null, info);
         } else {
             geocode(info.name.toLowerCase(), function (error, geo) {
@@ -201,11 +118,13 @@ function createChapter(events, comment, callback) {
                 } else {
                     info.lat = geo.lat;
                     info.lng = geo.lng;
+
                     cache[info.name] = {
                         lat: geo.lat,
                         lng: geo.lng
                     };
                 }
+
                 callback(null, info);
             });
         }
@@ -214,12 +133,14 @@ function createChapter(events, comment, callback) {
 
 function parseEvents(events) {
     var result = {};
+
     events.forEach(function (event) {
         var res = /^\s*([^:]+)\s*\:\s*(.*)\s*$/g.exec(event.body);
         if (res) {
             result[res[1].toLowerCase()] = res[2];
         }
     });
+
     return result;
 }
 
@@ -229,13 +150,22 @@ function parseComments(events, comments) {
     async.mapLimit(comments, 10, createChapter.bind(null, events), function (err, chapters) {
         fs.writeFileSync(CACHE_FILE_NAME, JSON.stringify(cache));
         chapters = chapters.sort(function (a, b) {
-            if (!a)
+            if (!a) {
                 return !b ? 0 : 1;
-            if (!b)
-                return -1;
+            }
 
-            if (a.name > b.name) return 1;
-            if (b.name > a.name) return -1;
+            if (!b) {
+                return -1;
+            }
+
+            if (a.name > b.name) {
+                return 1;
+            }
+
+            if (b.name > a.name) {
+                return -1;
+            }
+
             return 0;
         });
 
@@ -264,6 +194,7 @@ function parseComments(events, comments) {
 
 function loadEventSignups() {
     var ISSUE = 22;
+
     https.get({
         hostname: "api.github.com",
         port: 443,
@@ -279,11 +210,13 @@ function loadEventSignups() {
 
         response.pipe(concat(function (content) {
             var json;
+
             try {
                 json = JSON.parse(content);
             } catch (error) {
                 throw new Error("[EE] JSON syntax error: " + error + "\n" + content);
             }
+
             loadComments(parseEvents(json));
         }));
     }).on("error", function (error) {
@@ -293,6 +226,7 @@ function loadEventSignups() {
 
 function loadComments(events) {
     var ISSUE = 8;
+
     https.get({
         hostname: "api.github.com",
         port: 443,
@@ -308,11 +242,13 @@ function loadComments(events) {
 
         response.pipe(concat(function (content) {
             var json;
+
             try {
                 json = JSON.parse(content);
             } catch (error) {
                 throw new Error("[EE] JSON syntax error: " + error + "\n" + content);
             }
+
             parseComments(events, json);
         }));
     }).on("error", function (error) {
