@@ -93,6 +93,11 @@ function extractInfo(body) {
         getProperty(line, "twitter", result);
         getProperty(line, "email", result);
         getProperty(line, "event", result);
+        if (result.email) {
+            result.email = result.email
+                .replace(/\s*\[\s*at\s*\]\s*/ig, "@")
+                .replace(/gmail\s*$/ig, "gmail.com");
+        }
     });
 
     return result;
