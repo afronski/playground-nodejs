@@ -1,6 +1,6 @@
 city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter,email
 "Amsterdam","Netherlands","52.3702157","4.895167900000001","https://github.com/nodeschool/Amsterdam","","","Yoshua Wuyts","yoshuawuyts ","yoshomfg","","i@yoshuawuyts.com"
-"Bainbridge Island (WA)","USA","47.6262081","-122.5212448","https://github.com/nodeschool/bainbridge","","","Andrew Waterman","awaterma","andrew.waterman","","awaterma@awaterma.net"
+"Bainbridge Island (WA)","USA","47.6262081","-122.5212448","http://islandjs.org","http://www.meetup.com/IslandJS-Nodeschool/events/222090027/","","Andrew Waterman","awaterma","andrew.waterman","","awaterma@awaterma.net"
 "Belo Horizonte","Brazil","-19.9166813","-43.9344931","http://nodeschool.io/belo-horizonte/","http://even.tc/nodeschool-bh","","Paulo Pires","paulohp","paulo.manguara","","tarallo.php@gmail.com"
 "Berlin","Germany","52.52000659999999","13.404954","http://github.com/nodeschool/berlin","","","Finn Pauls","finnp ","finn-hat-skype","finnpauls","derfinn@gmail.com"
 "Boulder (Denver)","USA","39.7601821","-105.009292","https://github.com/nodeschool/denver-boulder","","","Richard Lucas","ralucas ","rlucas130","","richard@richardalucas.com"
