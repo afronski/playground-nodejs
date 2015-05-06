@@ -1,5 +1,4 @@
 city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter,email
-"Amsterdam","Netherlands","52.3702157","4.895167900000001","https://github.com/nodeschool/Amsterdam","","","Yoshua Wuyts","yoshuawuyts ","yoshomfg","","i@yoshuawuyts.com"
 "Bainbridge Island (WA)","USA","47.6262081","-122.5212448","http://islandjs.org","http://www.meetup.com/IslandJS-Nodeschool/events/222090027/","","Andrew Waterman","awaterma","andrew.waterman","","awaterma@awaterma.net"
 "Belo Horizonte","Brazil","-19.9166813","-43.9344931","http://nodeschool.io/belo-horizonte/","http://even.tc/nodeschool-bh","","Paulo Pires","paulohp","paulo.manguara","","tarallo.php@gmail.com"
 "Berlin","Germany","52.52000659999999","13.404954","http://github.com/nodeschool/berlin","","","Finn Pauls","finnp ","finn-hat-skype","finnpauls","derfinn@gmail.com"
@@ -29,7 +28,7 @@ city,country,lat,lon,chapter-url,event-url,hex-logo,owner,github,skype,twitter,e
 "Paris","France","48.856614","2.3522219","http://nodeschool.github.io/paris/","http://www.meetup.com/NodeSchool-Paris/events/221935923/","","Christophe Porteneuve","tdd","tddian","","tdd@tddsworld.com"
 "Pereira","Colombia","4.814278","-75.694558","http://nodeschool.io/pereira","","","Daniel Aristizabal","cronopio2","cronopio40","","aristizabal.daniel@gmail.com"
 "Portland (Maine)","USA","43.66147100000001","-70.2553259","https://nodeschool.io/Portland-me","","","Carlo DiCelico","carlodicelico","","",""
-"Provo","Utah","40.2338438","-111.6585337","http://nodeschool.io/provo","","","Michael A. Jackson","majgis","","","majgis@gmail.com"
+"Provo (Utah)","USA","40.2338438","-111.6585337","http://nodeschool.io/provo","http://www.meetup.com/Utah-Node-Ninjas/events/222202621/","","Michael A. Jackson","majgis","","","majgis@gmail.com"
 "Reno (Nevada)","USA","39.5296329","-119.8138027","http://nodeschool.io/reno","","","Colin Loretz","colinloretz","colinloretz","",""
 "Saint Petersburg","Russia","59.9342802","30.3350986","http://nodeschool.io/spb","","","Marinin Tim","marinintim","marinintim","","marinintim@gmail.com"
 "San Francisco (California)","USA","37.7749295","-122.4194155","http://www.nodeschool.io/sanfrancisco","","","Lydia Katsamberis","llkats","llkats","",""
