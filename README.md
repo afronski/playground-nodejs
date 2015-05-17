@@ -3,14 +3,11 @@
 ## TODO
 
 - ES6 in Node.js:
-  - Generators
-  - Weak Maps
-  - Proxies
-  - https://www.npmjs.com/package/traceur-runner
+  - babel.js - https://github.com/rauschma/node-es6-demo
 - Browserify + NPM + React.
-- Hapi.js
-- Kraken.js
-- C4 and generating diagrams from Node.js application.
-  - Similar tool like `ferd/recon` for Erlang.
-- [Pigato](https://github.com/prdn/pigato) - Use Case.
-- [Synaptic](https://github.com/cazala/synaptic)
+- Use cases:
+  - [Hapi.js](http://hapijs.com/)
+  - [Kraken.js](http://krakenjs.com/)
+  - [Pigato](https://github.com/prdn/pigato)
+- Sample project:
+  - [Synaptic](https://github.com/cazala/synaptic)
