@@ -3,4 +3,4 @@
 var bindings = require("bindings");
 var addon = bindings("myaddon");
 
-addon.print(process.argv[2]);
+console.log("%d", addon.length(process.argv[2]));
