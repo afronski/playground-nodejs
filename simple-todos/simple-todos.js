@@ -8,6 +8,14 @@ if (Meteor.isClient) {
             } else {
                 return Tasks.find({}, { sort: { createdAt: -1 } });
             }
+        },
+
+        hideCompleted: function () {
+            return Session.get("hideCompleted");
+        },
+
+        incompleteCount: function () {
+            return Tasks.find({ checked: { $ne: true } }).count();
         }
     });
 
