@@ -1,6 +1,4 @@
 #include <nan.h>
-#include <cstring>
-#include <iostream>
 
 #ifndef _WIN32
 #include <unistd.h>
@@ -8,43 +6,45 @@
 
 using namespace v8;
 
-NAN_METHOD(Print) {
-  Local<String> str = args[0].As<String>();
-  std::cout << *String::Utf8Value(str) << std::endl;
-  NanReturnUndefined();
-}
+class MyWorker : public NanAsyncWorker {
+ public:
+  MyWorker(NanCallback *callback, int delay):
+    NanAsyncWorker(callback),
+    delay(delay)
+  {}
 
-NAN_METHOD(Length) {
-  NanScope();
+  ~MyWorker() {}
 
-  Local<String> str = args[0].As<String>();
-  Local<Number> result = NanNew<Number>(std::strlen(*String::Utf8Value(str)));
+  void Execute () {
+    #ifdef _WIN32
+      Sleep(delay);
+    #else
+      usleep(delay * 1000);
+    #endif
+  }
 
-  NanReturnValue(result);
-}
+  void HandleOKCallback() {
+    NanScope();
+    callback->Call(0, NULL);
+  }
+
+ private:
+  int delay;
+};
 
 NAN_METHOD(Delay) {
   NanScope();
 
-  Local<Number> v8msecs = args[0].As<Number>();
-  Local<Function> callback = args[1].As<Function>();
+  int msecs = args[0].As<Number>()->IntegerValue();
 
-  int msecs = v8msecs->IntegerValue();
+  NanCallback* callback = new NanCallback(args[1].As<Function>());
+  MyWorker* worker = new MyWorker(callback, msecs);
 
-  #ifdef _WIN32
-    Sleep(msecs);
-  #else
-    usleep(msecs * 1000);
-  #endif
-
-  NanMakeCallback(NanGetCurrentContext()->Global(), callback, 0, NULL);
-
+  NanAsyncQueueWorker(worker);
   NanReturnUndefined();
 }
 
 void Init(Handle<Object> exports) {
-  exports->Set(NanNew("print"), NanNew<FunctionTemplate>(Print)->GetFunction());
-  exports->Set(NanNew("length"), NanNew<FunctionTemplate>(Length)->GetFunction());
   exports->Set(NanNew("delay"), NanNew<FunctionTemplate>(Delay)->GetFunction());
 }
 
