@@ -6,7 +6,6 @@
   - babel.js - https://github.com/rauschma/node-es6-demo
 - Browserify + NPM + React.
 - Use cases:
-  - [Hapi.js](http://hapijs.com/)
   - [Kraken.js](http://krakenjs.com/)
   - [Pigato](https://github.com/prdn/pigato)
 - Sample project:
