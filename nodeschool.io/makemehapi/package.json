@@ -1,0 +1,13 @@
+{
+  "name": "makemehapi-solutions",
+  "version": "1.0.0",
+  "description": "Solutions for `makemehapi` workshopper.",
+  "dependencies": {
+    "handlebars": "~3.0.3",
+    "hapi": "~8.6.0",
+    "joi": "~6.4.3",
+    "rot13-transform": "0.0.1"
+  },
+  "author": "Wojtek Gawroński (afronski@gmail.com)",
+  "license": "MIT"
+}
